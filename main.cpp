@@ -1,27 +1,13 @@
 #include <iostream>
 #include "MovieCollection.cpp"
-#include "AVL.cpp"
 #include <list>
 #include <unordered_map>
 
-class MovieAVL:public AVL<Movie>
-{
-    // Insert into AVL on basis of movie ratings.
-    virtual int compare(Movie movie1, Movie movie2)
-    {
-        if (movie1.imdb_score == movie2.imdb_score) return 0;
-        else if (movie1.imdb_score < movie2.imdb_score) return -1;
-        return 1;
-    }
 
-};
-
-// Search movies released in a given year
+// Container for year related functions.
 class YearTable
 {
     private:
-    // If i were to do it properly i.e., user filters out a year and provides a title, then would've used this.
-    // std::unordered_map<int, std::multimap<string, Movie*>> table;
     
     // Print a movie given a release year. O(n) print time as finding a year is O(1) here.
     std::unordered_multimap<int, Movie*> u_table;
@@ -30,6 +16,15 @@ class YearTable
     std::multimap<int, Movie*> o_table;
 
     public:
+    /*
+    Description: Takes as input a pointer to the master array containing movie title as keys 
+                 and movie nodes as values and creates a multi map with year as keys and pointer 
+                 movie nodes 
+
+    Time Complexity: 
+        -Best Case: O(n)
+        -Worst Case: O(n)
+    */
     void createIndex(MovieCollection* obj)
     {
         std::multimap<std::string, Movie>::iterator itr;
@@ -37,15 +32,20 @@ class YearTable
         {
             int year = (*itr).second.title_year;
             Movie* movieptr = &(*itr).second;
-            // The proper way.
-            // table.insert(year, createMap(year));
+
             o_table.insert({year, movieptr});
             u_table.insert({year, movieptr});
         }
         
     }
 
-    // Years are already sorted in ordered_multimap. Print takes O(n) best, average and worst time.
+    /*
+    Description: Prints the years in ascending order. The years already sorted in the ordered multi map
+
+    Time Complexity: 
+        -Best Case: O(n)
+        -Worst Case: O(n)
+    */
     void printByYearAscending()
     {
         int count = 0;
@@ -57,7 +57,13 @@ class YearTable
         std::cout << "Count: " << count << '\n';
     }
 
-    // Years are already sorted in ordered_multimap. Print takes O(n) best, average and worst time.
+    /*
+    Description: Prints the years in Descending order. The years already sorted in the ordered multi map
+
+    Time Complexity: 
+        -Best Case: O(n)
+        -Worst Case: O(n)
+    */
     void printByYearDescending()
     {
         int count = 0;
@@ -75,8 +81,13 @@ class YearTable
         std::cout << "Count: " << count << '\n';
     }
 
-
-    // Fetching a year from unordered table takes O(1) time. Print takes O(n) time.
+    /*
+    Description: Prints the movies from unordered table released in the year selected by the user. The year (int) is 
+                 taken as a key and the movie pointers are in the value
+    Time Complexity: 
+        -Best Case: O(1) * O(n)
+        -Worst Case: O(1) * O(n)
+    */
     void printByYear(int year)
     {
         int count = 0;
@@ -105,7 +116,6 @@ class YearTable
 };
 
 
-// Print movies Rating-wise
 class RatingTable
 {
     private:
@@ -129,6 +139,15 @@ class RatingTable
     public:
 
     // Create an index from the master array containing movies sorted by their ratings.
+    /*
+    Description: Takes as input a pointer to the master array containing movie title as keys 
+                 and movie nodes as values and creates a multi map with year as keys and pointer 
+                 movie nodes 
+
+    Time Complexity: 
+        -Best Case: O(n)
+        -Worst Case: O(n)
+    */
     void createIndex(MovieCollection* obj)
     {
         std::multimap<std::string, Movie>::iterator itr;
@@ -146,6 +165,13 @@ class RatingTable
     }
 
     // Print all movies in order of highest rating to lowest.
+
+    /*
+    Description: Prints all the movies rating-wise (highest to lowest)
+    Time Complexity: 
+        -Best Case: O(n)
+        -Worst Case: O(n)
+    */
     void printByRating()
     {
         std::list<Movie*>::iterator itr;
@@ -163,6 +189,14 @@ class RatingTable
         std::cout << "Count: " << count;
     }
     // Print all movies of a given rating.
+
+    /*
+    Description: Prints the movies from custom-made container released in the rating selected by the user. The rating (double) is 
+                 taken as a key and the movie pointers are in the value. Fetching valid key (rating) takes O(1) time.
+    Time Complexity: 
+        -Best Case: O(1) * O(n)
+        -Worst Case: O(1) * O(n)
+    */
     void printByRating(double rating)
     {
         std::list<Movie*>::iterator itr;
@@ -191,6 +225,15 @@ class GenreTable
     
 
     public:
+    /*
+    Description: Takes as input a pointer to the master array containing movie title as keys 
+                 and movie nodes as values and creates a multi map with year as keys and pointer 
+                 movie nodes 
+
+    Time Complexity: 
+        -Best Case: O(n)
+        -Worst Case: O(n)
+    */
     void createIndex(MovieCollection* obj)
     {
         std::multimap<std::string, Movie>::iterator itr;
@@ -206,6 +249,14 @@ class GenreTable
         
     }
 
+    /*
+    Description: Prints the movies genre-wise. Search from multi-map in this case is done in constant steps not log(n)
+                 time as genres of a movie never scale. They remain a fixed number.
+
+    Time Complexity: 
+        -Best Case: O(1) * O(n) = O(n)
+        -Worst Case: O(1) * O(n) = O(n)
+    */
     void printByGenre(std::string genre)
     {
         auto its = table.equal_range(genre);
@@ -229,6 +280,15 @@ class GenreRatingTable
     private:
     std::map<std::string, std::multimap<double, Movie*>> table;
     public:
+    /*
+    Description: Takes as input a pointer to the master array containing genre as keys 
+                 and a multi map as values whose keys are ratings and movie nodes as 
+                 values
+
+    Time Complexity: 
+        -Best Case: O(n)
+        -Worst Case: O(n^2)
+    */
     void createIndex(MovieCollection* obj)
     {
         std::multimap<std::string, Movie>::iterator itr;
@@ -255,6 +315,13 @@ class GenreRatingTable
     }
 
     // Finding genre is constant time. Never more than 5 steps. O(1) find time, then O(n) print time.
+
+    /*
+    Description: Prints the movies rating-wise (highest to lowest) from the genre selected by the user
+    Time Complexity: 
+        -Best Case: O(1) * O(n)
+        -Worst Case: O(1) * O(n)
+    */
     void printByRating(std::string genre)
     {
         auto its = table.find(genre);
