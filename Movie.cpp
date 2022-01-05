@@ -3,6 +3,7 @@
 #include <map>
 #include <fstream>
 #include <sstream>
+#include <string>
 
 class Movie
 {
@@ -10,7 +11,7 @@ class Movie
     std::string movie_title;
     std::vector<std::string> genre;
     int title_year;
-    float imdb_score;
+    double imdb_score;
     std::string director_name;
     int director_facebook_likes;
     int num_critic_for_reviews;
@@ -32,20 +33,22 @@ class Movie
     std::string country;
     std::string content_rating;
     int budget;
-    float aspect_ratio;
+    double aspect_ratio;
     int movie_facebook_likes;
     std::string color;
 
+    // Default constructor
     Movie(){}
-    // Movie constructor
+
+    // Overloaded constructor. Accepts 28 fields related to each movie.
     Movie(std::string movie_title,std::string genre,int title_year,
-    float imdb_score,std::string director_name,int director_facebook_likes,
+    double imdb_score,std::string director_name,int director_facebook_likes,
     int num_critic_for_reviews,int duration,std::string actor_1_name,
     int actor_1_facebook_likes,std::string actor_2_name,int actor_2_facebook_likes,
     std::string actor_3_name,int actor_3_facebook_likes,int gross,int num_voted_users,
     int cast_total,int facenumber_in_poster,std::string plot_keywords,std::string movie_imdb_link,
     int num_user_for_reviews,std::string language,std::string country,std::string content_rating,
-    long budget,float aspect_ratio,long movie_facebook_likes,std::string color)
+    long budget,double aspect_ratio,long movie_facebook_likes,std::string color)
     {
         std::string word;
         this->movie_title = movie_title;
