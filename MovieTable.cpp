@@ -1,13 +1,31 @@
-
 // Custom Hash Table Implementation for 
 class MovieTable
 {
 private:
+// 26 alphabets, 10 digits and one special character '#' from which movie titles begin.
+/* Each of the 26 alphabet and '#' is mapped to the second character which can again be another alphabet, or a dot,
+    or a comma, or a colon.
+
+    In total, possibilities for first two characters of a movie title 
+            = 27 (alphabets + '#') * 29 (alphabets +' ,' + '.' + ':') + 10 (digits) = 793 possibilities.
+    
+    One index is left out for movies that begin with non-ascii, unicode, or other special characters.
+*/
 #define SIZE_INDICES 794
 
     std::list<Movie *> table[SIZE_INDICES];
 
 public:
+
+    /*
+    Description: Accepts a movie pointer and hashes based on the first two characters of the movie title.
+                 The returned index is then used to insert into the linked list object present at that index.
+
+    Time Complexity:
+        -Best Case: O(1)
+        -Worst Case: O(1)
+    */
+
     int hash(Movie *obj)
     {
         std::string str = (*obj).movie_title;
@@ -46,6 +64,7 @@ public:
         };
     }
 
+    // Overloaded hash function that accepts movie title as input.
     int hash(std::string str)
     {
         int str1;
@@ -84,7 +103,8 @@ public:
     }
 
     /*
-    Description:
+    Description: Accepts a pointer to the master array containing movie nodes and inserts movie pointers into the
+                 created table at hashed locations returned from hash function.
 
     Time Complexity:
         -Best Case: O(n)
@@ -105,6 +125,16 @@ public:
             table[position].push_front(ptr);
         }
     }
+
+    /*
+    Description: Prints movies given a partial name or a complete name.
+
+    Time Complexity:
+        Index into which the movie can be located is found in O(1) constant time through hash function.
+
+        -Best Case: O(1) . O(n)
+        -Worst Case: O(1) . O(n)
+    */
 
     void printByName(std::string name)
     {
