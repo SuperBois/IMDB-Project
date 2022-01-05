@@ -1,8 +1,8 @@
 #include <iostream>
-#include "MovieCollection.cpp"
-#include <list>
 #include <unordered_map>
-
+#include "MovieCollection.cpp"
+#include "Actor.cpp"
+#include "Director.cpp"
 
 // Container for year related functions.
 class YearTable
@@ -250,6 +250,33 @@ class GenreTable
     }
 
     /*
+    Description: Prints the directors given a movie genre. 
+                Search from multi-map in done in log(n) time. Print takes O(n) time.
+    
+
+    Time Complexity: 
+        -Best Case: O(log n) * O(n) = O(nlogn)
+        -Worst Case: O(log n) * O(n) = O(nlogn)
+    */
+
+    void printDirectorsOfGenre(std::string genre)
+    {
+        auto its = table.equal_range(genre);
+        int count = 0;
+        bool flag = false;
+        for (auto itr = its.first; itr != its.second; itr++)
+        {
+            flag = true;
+            std::cout << (*itr).second -> movie_title << "|" << (*itr).first
+             << "|" << (*itr).second -> director_name << '\n';
+            count++;
+        }
+        if (flag) std::cout << "Count: " << count << '\n';
+        else std::cout << "Genre does not exist." << '\n';
+        return;
+    }
+
+    /*
     Description: Prints the movies genre-wise. Search from multi-map in this case is done in constant steps not log(n)
                  time as genres of a movie never scale. They remain a fixed number.
 
@@ -343,34 +370,171 @@ class GenreRatingTable
     }
 };
 
+class SearchMovie
+{
+    private:
+    #define SIZE_INDICES 794
+
+    std::list<Movie*> table[SIZE_INDICES];
+    public:
+
+    int hash(Movie* obj)
+    {
+        std::string str = (*obj).movie_title;
+        int str1;
+        int str2;
+        if (str.at(0) == 'O')
+        {
+            return 793;
+        }
+        try 
+        {
+                return stoi(str.substr(0,1));
+        }
+        catch(const std::exception& e)
+        {
+                if ((97 <= (int(tolower(str.at(0)))) && (int(tolower(str.at(0)))) <= 122 || str.at(0) == '#' ) && (97 <= (int(tolower(str.at(1)))) && (int(tolower(str.at(0)))) <= 122 || str.at(1) == ',' ||str.at(1) == ':'|| str.at(1) == '.' ))
+                {
+                    if (str.at(0) == '#')
+                            str1 = 26;
+                    else 
+                            str1 = int(tolower(str.at(0)))-97;
+                            
+                    if (str.at(1) == ',')
+                            str2 = 26;
+                    else if (str.at(1) == ':')
+                            str2 = 27;
+                    else if (str.at(1) == '.')
+                            str2 = 28;
+                    else 
+                            str2 = (int(tolower(str.at(1)))-97);
+
+                    return ((str1 * 29) + str2) + 10 ;
+                }
+                else
+                    return 793 ;
+        };
+    }
+
+    int hash(std::string str)
+    {
+        int str1;
+        int str2;
+        if (str.at(0) == 'O')
+        {
+            return 793;
+        }
+        try 
+        {
+                return stoi(str.substr(0,1));
+        }
+        catch(const std::exception& e)
+        {
+                if ((97 <= (int(tolower(str.at(0)))) && (int(tolower(str.at(0)))) <= 122 || str.at(0) == '#' ) && (97 <= (int(tolower(str.at(1)))) && (int(tolower(str.at(0)))) <= 122 || str.at(1) == ',' ||str.at(1) == ':'|| str.at(1) == '.' ))
+                {
+                    if (str.at(0) == '#')
+                            str1 = 26;
+                    else 
+                            str1 = int(tolower(str.at(0)))-97;
+                            
+                    if (str.at(1) == ',')
+                            str2 = 26;
+                    else if (str.at(1) == ':')
+                            str2 = 27;
+                    else if (str.at(1) == '.')
+                            str2 = 28;
+                    else 
+                            str2 = (int(tolower(str.at(1)))-97);
+
+                    return ((str1 * 29) + str2) + 10 ;
+                }
+                else
+                    return 793 ;
+        };
+    }
+
+    
+    /*
+    Description:  
+
+    Time Complexity: 
+        -Best Case: O(n)
+        -Worst Case: O(n)
+    */
+    void createIndex(MovieCollection* obj)
+    {
+        std::multimap<std::string, Movie>::iterator itr;
+        for (itr = obj->map.begin(); itr != obj->map.end(); itr++)
+        {
+            // Storing address of the value (movie node) present in map.
+            Movie* ptr = &((*itr).second);
+
+            // Hashing this pointer into the array of lists.
+            int position = hash(ptr);
+
+            // Insert at head.
+            table[position].push_front(ptr);
+        }
+    }
+
+    void printByName(std::string name)
+    {
+        std::list<Movie*>::iterator itr;
+        std::list<Movie*> list_obj = table[hash(name)];
+        int count = 0;
+        for (itr = list_obj.begin(); itr != list_obj.end(); itr++)
+        {
+            std::cout << (*itr) -> movie_title << '\n';
+            count++;
+        }
+        std::cout << "Count: " << count;
+    }
+};
+
+
+
+
 int main()
 {
     // Master map that contains titles as keys and movie nodes as values.
     MovieCollection master;
 
 
-    YearTable obj1;
-    obj1.createIndex(&master);
-    // obj1.printByYearDescending();
-    // obj1.printByYear(2016);
+    YearTable year_list;
+    year_list.createIndex(&master);
+    // year_list.printByYearDescending();
+    // year_list.printByYear(2016);
 
     // Rating index. Movie pointers are inserted sorted by their ratings.
-    RatingTable obj2;
+    RatingTable rating_list;
 
     // Import data from the master array into the index.
-    obj2.createIndex(&master);
+    rating_list.createIndex(&master);
 
     // // Print movies of a given rating.
-    obj2.printByRating(9.3);
+    // rating_list.printByRating(9.3);
 
     // // Print movies in order of decreasing ratings.
-    // obj2.printByRating();
-    GenreTable obj3;
-    obj3.createIndex(&master);
-    // obj3.printByGenre("Romance");
+    // rating_list.printByRating();
+    GenreTable genre_list;
+    genre_list.createIndex(&master);
+    // genre_list.printByGenre("Romance");
+    // genre_list.printDirectorsOfGenre("Romance");
 
-    GenreRatingTable obj4;
-    obj4.createIndex(&master);
-    // obj4.printByRating("Action");
-    
+    GenreRatingTable genre_rating_list;
+    genre_rating_list.createIndex(&master);
+    // genre_rating_list.printByRating("Action");
+
+
+    // Actor actor_list;
+    // actor_list.CreateIndex(&master);
+    // actor_list.areCoActors("Matt Damon", "Igal Naor");
+    // actor_list.search("Leonardo DiCaprio");
+    // actor_list.searchDoubleCoActors("Matt Damon");
+    // actor_list.searchUniqueCoActors("Francesca Capaldi");
+
+    SearchMovie movie_index;
+    movie_index.createIndex(&master);
+    movie_index.printByName("Al");
+
 }

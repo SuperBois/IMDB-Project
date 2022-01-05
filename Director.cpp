@@ -1,7 +1,5 @@
 #include <list>
 #include <map>
-#include <iostream>
-#include "MovieCollection.cpp"
 
 class Director
 {

@@ -1,5 +1,4 @@
 #include <list>
-#include "MovieCollection.cpp"
 
 struct Profile
 {     // This struct will maintain year wise movies of actor and also its co-actors.
