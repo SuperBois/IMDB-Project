@@ -1,4 +1,5 @@
 #include <list>
+#include <iostream>
 
 struct Profile
 {     // This struct will maintain year wise movies of actor and also its co-actors.
@@ -27,37 +28,52 @@ class Actor
                   // For actor 1
                   if (this->map.count((*ptr).actor_1_name) == 0 && (*ptr).actor_1_name != "")
                   {     
-
+                        // If actor is not in map already, then a new mapping is created from actor name to profile
+                        // Setting list of pointers of movies 
                         std::list<Movie*> ptrs;
                         ptrs.push_back(ptr);
+
+                        // Making new profile
                         Profile profile;
+                        // Inserting year wise in profile map to maintain chronological order
                         profile.profileMap.insert({(*ptr).title_year,ptr});
+                        /* Inserting co-actors name and the linked list of pointers
+                         in which both actor and its co-actors have worked*/
                         profile.co_actorMap.insert({(*ptr).actor_2_name,ptrs});
                         profile.co_actorMap.insert({(*ptr).actor_3_name,ptrs});
+                        // Inserting in map
                         this->map.insert({(*ptr).actor_1_name,profile});
 
                   }
 
                   else if ((*ptr).actor_1_name != "")
                   {
+                        // If actor is already present as key in map, then its profile is updated.
+                        // Finding profile of actor  
                         auto it = this->map.find((*ptr).actor_1_name);
+                        // Inserting year and movie pointer in profile map. 
                         it->second.profileMap.insert({(*ptr).title_year,ptr});
 
+                        // If co-actor is not in co-actor map, a new mapping from co-actor to linked list is made.
                         if (it->second.co_actorMap.count((*ptr).actor_2_name) == 0 && (*ptr).actor_2_name != "")
                         {
                               std::list<Movie*> ptrs;
                               ptrs.push_back(ptr);
                               it->second.co_actorMap.insert({(*ptr).actor_2_name,ptrs});
                         }
+                        /* If there is a co-actor already present in co-actorMap,
+                         then the movie is inserted in the linked list of that co-actor*/
                         else if ((*ptr).actor_2_name != "")
                               it->second.co_actorMap.at((*ptr).actor_2_name).push_back(ptr);
-
+                        // If co-actor is not in co-actor map, a new mapping from co-actor to linked list is made.
                         if (it->second.co_actorMap.count((*ptr).actor_3_name) == 0 && (*ptr).actor_3_name != "")
                         {
                               std::list<Movie*> ptrs;
                               ptrs.push_back(ptr);
                               it->second.co_actorMap.insert({(*ptr).actor_3_name,ptrs});
                         }
+                        /* If there is a co-actor already present in co-actorMap,
+                         then the movie is inserted in the linked list of that co-actor*/
                         else if ((*ptr).actor_3_name != "")
                               it->second.co_actorMap.at((*ptr).actor_3_name).push_back(ptr);  
                         
@@ -65,17 +81,25 @@ class Actor
                   // For actor 2
                   if (this->map.count((*ptr).actor_2_name) == 0 && (*ptr).actor_2_name != "")
                   {
+                        // If actor is not in map already, then a new mapping is created from actor name to profile
+                        // Setting list of pointers of movies 
                         std::list<Movie*> ptrs;
                         ptrs.push_back(ptr);
+                        // Making new profile
                         Profile profile;
+                        // Inserting year and movie pointer in profile map. 
                         profile.profileMap.insert({(*ptr).title_year,ptr});
+                        /* Inserting co-actors name and the linked list of pointers
+                         in which both actor and its co-actors have worked*/
                         profile.co_actorMap.insert({(*ptr).actor_1_name,ptrs});
                         profile.co_actorMap.insert({(*ptr).actor_3_name,ptrs});
+                        // Inserting in map
                         this->map.insert({(*ptr).actor_2_name,profile});
                   }
 
                   else if ((*ptr).actor_2_name != "")
                   {
+                        
                         auto it = this->map.find((*ptr).actor_2_name);
                         it->second.profileMap.insert({(*ptr).title_year,ptr});
 
@@ -172,6 +196,7 @@ class Actor
             }
       }
 
+      // Searches and prints unique co-actors of given actor and its movies
       void searchUniqueCoActors(std::string actorName)
       {
             auto it = this->map.find(actorName);
@@ -188,6 +213,7 @@ class Actor
             }
       }
 
+      // Searches and prints the co-actors of co_actors of given actor
       void printCoActorsOfCoActors(std::string actorName)
       {
             auto it = this->map.find(actorName);
@@ -204,7 +230,7 @@ class Actor
                   std::cout<<'\n'<<std::endl;
             }
       }
-
+      // Searches and tells if two actors are co-actors or not.
       void areCoActors(std::string actor1,std::string actor2)
       {
             auto it = this->map.find(actor1);

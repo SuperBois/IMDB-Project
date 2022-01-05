@@ -9,7 +9,7 @@
 class MovieCollection
 {
     private:
-    std::multimap <std::string, Movie> map;
+    
 
     // Parses string to integer and returns -1 if string is empty
     int stringToInt(std::string str)
@@ -30,7 +30,8 @@ class MovieCollection
     }
 
     public:
-
+    
+    std::multimap <std::string, Movie> map;
     // Default Contructor
     MovieCollection()
     {

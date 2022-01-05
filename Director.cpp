@@ -1,5 +1,6 @@
 #include <list>
 #include <map>
+#include <iostream>
 
 // Container for storing directors mapped to their movies. Uses STL multimap.
 class Director

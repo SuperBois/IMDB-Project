@@ -28,7 +28,7 @@ int main()
     rating_index.createIndex(&master);
     genre_index.createIndex(&master);
     genre_rating_index.createIndex(&master);
-    actor_index.CreateIndex(&master);
+    actor_index.createIndex(&master);
     movie_index.createIndex(&master);
     director_index.createIndex(&master);
 
