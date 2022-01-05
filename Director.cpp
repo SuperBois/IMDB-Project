@@ -9,6 +9,13 @@ class Director
       std::multimap <std::string, Movie*> map;
       
       public:
+      /* 
+      Description: This function will get all the movie nodes from movieCollection and will set up multimap for director class.
+      
+      Time Complexity:
+          -Best Case: O(n)
+          -Worst Case: O(n)
+      */
       void createIndex(MovieCollection* obj)
       {
             std::multimap<std::string, Movie*>::iterator itr;
@@ -22,7 +29,17 @@ class Director
                   this->map.insert({(*ptr).director_name,ptr});
             }
       }
+      /* 
+      Description: Search and print movies of the given director.
+      
+      Time Complexity for searching:
+          -Best Case: O(logn)
+          -Worst Case: O(logn)
 
+      Time Complexity for printing:
+          -Best Case: O(n)
+          -Worst Case: O(n)
+      */
       void search(std::string directorName)
       {
             // Returns all the movies of given director in log(n) time

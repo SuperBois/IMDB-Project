@@ -16,7 +16,13 @@ class Actor
 
       public:
 
-      // This function will get all the movie nodes from movieCollection and will set up profile struct.
+      /* 
+      Description: This function will get all the movie nodes from movieCollection and will set up profile struct.
+      
+      Time Complexity:
+          -Best Case: O(n)
+          -Worst Case: O(n)
+      */
       void createIndex(MovieCollection* obj)
       {
             // Iterating through all the movie nodes and maintaing profile
@@ -161,6 +167,17 @@ class Actor
             }
       }
 
+      /* 
+      Description: Search and print movies of the given actor.
+      
+      Time Complexity for searching:
+          -Best Case: O(logn)
+          -Worst Case: O(logn)
+
+      Time Complexity for printing:
+          -Best Case: O(n)
+          -Worst Case: O(n)
+      */
       void search(std::string actorName)
       {
             // Returns all the movie pointers of given actor in log(n) time
@@ -174,6 +191,17 @@ class Actor
             }
       }
       
+      /* 
+      Description: Search and print movies and co actors of the given actor.
+      
+      Time Complexity for searching:
+          -Best Case: O(logn)
+          -Worst Case: O(logn)
+
+      Time Complexity for printing:
+          -Best Case: O(n)
+          -Worst Case: O(n)
+      */
       void searchCoActors(std::string actorName)
       {
             //returns all the movie pointers of given actor in log(n) time
@@ -196,7 +224,17 @@ class Actor
             }
       }
 
-      // Searches and prints unique co-actors of given actor and its movies
+      /* 
+      Description: Searches and prints unique co-actors of given actor and its movies
+      
+      Time Complexity for searching:
+          -Best Case: O(logn)
+          -Worst Case: O(logn)
+
+      Time Complexity for printing:
+          -Best Case: O(n2)
+          -Worst Case: O(n2)
+      */
       void searchUniqueCoActors(std::string actorName)
       {
             auto it = this->map.find(actorName);
@@ -213,7 +251,17 @@ class Actor
             }
       }
 
-      // Searches and prints the co-actors of co_actors of given actor
+      /* 
+      Description: Searches and prints the co-actors of co_actors of given actor
+      
+      Time Complexity for searching:
+          -Best Case: O(logn)
+          -Worst Case: O(logn)
+
+      Time Complexity for printing:
+          -Best Case: O(n2)
+          -Worst Case: O(n2)
+      */
       void printCoActorsOfCoActors(std::string actorName)
       {
             auto it = this->map.find(actorName);
@@ -230,7 +278,17 @@ class Actor
                   std::cout<<'\n'<<std::endl;
             }
       }
-      // Searches and tells if two actors are co-actors or not.
+      /* 
+      Description: Searches and tells if two actors are co-actors or not.
+      
+      Time Complexity for searching:
+          -Best Case: O(logn)
+          -Worst Case: O(logn)
+
+      Time Complexity for printing:
+          -Best Case: O(n)
+          -Worst Case: O(n)
+      */
       void areCoActors(std::string actor1,std::string actor2)
       {
             auto it = this->map.find(actor1);
@@ -242,6 +300,8 @@ class Actor
                   {
                         std::cout<<(*pr).movie_title<<std::endl;
                   }
+            }else{
+                  std::cout<<"Not co-Actors"<<std::endl;
             }
       }
 };

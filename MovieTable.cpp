@@ -35,12 +35,19 @@ public:
         {
             return 793;
         }
+        // If first alphabet of str is digit, then it is returned as index.
         try
         {
             return stoi(str.substr(0, 1));
         }
+        // Else there is alphabets or special characters in first two alphabets
         catch (const std::exception &e)
-        {
+        {   
+            /* 
+               If character at position 0 or 1 is other then a-z , ',' , ':' , '.'
+               then 793 index is returned.
+               Else the first two alphabets are hashed based on their ascii values.
+            */
             if ((97 <= (int(tolower(str.at(0)))) && (int(tolower(str.at(0)))) <= 122 || str.at(0) == '#') && (97 <= (int(tolower(str.at(1)))) && (int(tolower(str.at(0)))) <= 122 || str.at(1) == ',' || str.at(1) == ':' || str.at(1) == '.'))
             {
                 if (str.at(0) == '#')
@@ -73,12 +80,15 @@ public:
         {
             return 793;
         }
+        
         try
         {
             return stoi(str.substr(0, 1));
         }
+        
         catch (const std::exception &e)
         {
+            //
             if ((97 <= (int(tolower(str.at(0)))) && (int(tolower(str.at(0)))) <= 122 || str.at(0) == '#') && (97 <= (int(tolower(str.at(1)))) && (int(tolower(str.at(0)))) <= 122 || str.at(1) == ',' || str.at(1) == ':' || str.at(1) == '.'))
             {
                 if (str.at(0) == '#')
