@@ -26,9 +26,8 @@ public:
         -Worst Case: O(1)
     */
 
-    int hash(Movie *obj)
+int hash(std::string str)
     {
-        std::string str = (*obj).movie_title;
         int str1;
         int str2;
         if (str.at(0) == 'O')
@@ -71,45 +70,12 @@ public:
         };
     }
 
+
     // Overloaded hash function that accepts movie title as input.
-    int hash(std::string str)
+    
+    int hash(Movie* obj)
     {
-        int str1;
-        int str2;
-        if (str.at(0) == 'O')
-        {
-            return 793;
-        }
-        
-        try
-        {
-            return stoi(str.substr(0, 1));
-        }
-        
-        catch (const std::exception &e)
-        {
-            //
-            if ((97 <= (int(tolower(str.at(0)))) && (int(tolower(str.at(0)))) <= 122 || str.at(0) == '#') && (97 <= (int(tolower(str.at(1)))) && (int(tolower(str.at(0)))) <= 122 || str.at(1) == ',' || str.at(1) == ':' || str.at(1) == '.'))
-            {
-                if (str.at(0) == '#')
-                    str1 = 26;
-                else
-                    str1 = int(tolower(str.at(0))) - 97;
-
-                if (str.at(1) == ',')
-                    str2 = 26;
-                else if (str.at(1) == ':')
-                    str2 = 27;
-                else if (str.at(1) == '.')
-                    str2 = 28;
-                else
-                    str2 = (int(tolower(str.at(1))) - 97);
-
-                return ((str1 * 29) + str2) + 10;
-            }
-            else
-                return 793;
-        };
+        return hash((*obj).movie_title);
     }
 
     /*
